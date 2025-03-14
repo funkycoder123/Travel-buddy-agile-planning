@@ -1,2 +1,2 @@
-# lab-agile-planning
-This repo contains the lab for agile planning.
+# Teavel buddy web app
+This repo contains the agile planning for Travel buddy app.
