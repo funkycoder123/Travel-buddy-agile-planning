@@ -1,2 +1,3 @@
-# Teavel buddy web app
+# Travel buddy web app
+
 This repo contains the agile planning for Travel buddy app.
