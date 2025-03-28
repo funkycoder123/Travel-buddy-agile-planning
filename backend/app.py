@@ -28,6 +28,7 @@ CORS(app)  # Enable Cross-Origin Resource Sharing
 # user model (name matches our class diagram)
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
 
@@ -48,6 +49,7 @@ def home():
 def register():
     # handles user registration
     data = request.get_json()
+    name = data.get("name")
     email = data.get("email")
     password = data.get("password")
 
@@ -57,7 +59,7 @@ def register():
 
     # hash password and store user
     hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
-    new_user = User(email=email, password=hashed_password)
+    new_user = User(name=name, email=email, password=hashed_password)
     db.session.add(new_user)
     db.session.commit()
 
@@ -77,7 +79,7 @@ def login():
         access_token = create_access_token(
             identity=str(user.id), expires_delta=datetime.timedelta(hours=1)
         )
-        return jsonify({"access_token": access_token}), 200
+        return jsonify({"access_token": access_token, "name": user.name}), 200
 
     return jsonify({"message": "Invalid credentials"}), 401
 
