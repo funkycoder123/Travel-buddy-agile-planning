@@ -81,6 +81,39 @@ def login():
 
     return jsonify({"message": "Invalid credentials"}), 401
 
+# Map/Direction Route
+
+# Imports for Google Maps API
+import googlemaps
+from flask import Flask, jsonify, request
+gmaps = googlemaps.Client(key="YOUR_GOOGLE_MAPS_API_KEY")
+
+@app.route("/directions", methods=["GET"])
+def get_directions():
+    origin = request.args.get('origin')  # Get origin from query params
+    destination = request.args.get('destination') #Get destination from query params
+
+    # Checking if origin and destination where entered correctly
+    if not origin or not destination:
+        return jsonify({"message": "Both origin and destination are required"}), 400
+    
+    # Getting directions from Google maps API
+    direction_result = gmaps.directions(origin, destination, mode="driving")
+
+    # Setting variables for distance and duration and filling it with trip data
+    if direction_result: 
+        leg = direction_result[0]['legs'][0]
+        duration = leg['duration']['text']
+        distance = leg['distance']['text']
+        return jsonify({
+            "duration": duration,
+            "distance": distance,
+            "directions": direction_result[0]  # Send full directions data (optional)
+        }), 200
+    # Directions were not found
+    else:
+        return jsonify({"message": "No Directions Found!"}), 400
+
 
 # Protected Route (Requires JWT)
 @app.route("/protected", methods=["GET"])
@@ -92,4 +125,4 @@ def protected():
 
 # Run the Flask App
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=True, host="0.0.0.0", port=8080)
