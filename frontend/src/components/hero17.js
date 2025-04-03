@@ -10,26 +10,25 @@ const Hero17 = (props) => {
     <div className="hero17-header78">
       <div className="hero17-column thq-section-padding thq-section-max-width">
         <div className="hero17-content1">
-          <h1 className="hero17-text1 thq-heading-1">
-            {props.heading1 ?? (
-              <Fragment>
-                <span className="hero17-text7">
-                  Explore the World with Ease
-                </span>
-              </Fragment>
-            )}
-          </h1>
-          <p className="hero17-text2 thq-body-large">
-            {props.content1 ?? (
-              <Fragment>
-                <span className="hero17-text8">
-                  Plan your next adventure with our user-friendly travel web
-                  application. Discover new destinations, create itineraries,
-                  and make memories that last a lifetime.
-                </span>
-              </Fragment>
-            )}
-          </p>
+          <h1 className="text-4xl font-extrabold text-red-500 mb-2">Travel Buddy</h1>
+          <h2 className="hero17-text1 thq-heading-1 text-2xl font-semibold text-gray-800 mb-4">
+              {props.heading1 ?? (
+                <Fragment>
+                  <span className="hero17-text7">Explore the World with Ease</span>
+                </Fragment>
+              )}
+            </h2>
+            <p className="hero17-text2 thq-body-large text-gray-600">
+              {props.content1 ?? (
+                <Fragment>
+                  <span className="hero17-text8">
+                    Plan your next adventure with our user-friendly travel web
+                    application. Discover new destinations, create itineraries,
+                    and make memories that last a lifetime.
+                  </span>
+                </Fragment>
+              )}
+            </p>
         </div>
         <div className="hero17-actions">
           <button className="thq-button-filled hero17-button1">
