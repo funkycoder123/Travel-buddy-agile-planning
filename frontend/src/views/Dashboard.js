@@ -55,13 +55,26 @@ export default function Dashboard() {
       {/* Sidebar */}
       <aside className="w-full md:w-64 bg-white border-r p-4 shadow-md flex flex-col justify-between">
         <div>
-          <h1 className="text-3xl font-extrabold text-red-500 tracking-tight mb-2">Travel Buddy</h1>
+          <h1 className="text-3xl font-extrabold text-red-500 tracking-tight mb-2">
+            Travel Buddy
+          </h1>
           <button className="w-full bg-red-400 hover:bg-red-300 text-white mt-4 py-2 rounded">
             New Trip
           </button>
           <nav className="space-y-2 mt-4">
-            {["Home", "All trips", "Travels", "Rooms", "Transport", "Attractions"].map((item) => (
-              <a key={item} href="#" className="block px-2 py-1 rounded hover:bg-red-50 text-red-400">
+            {[
+              "Home",
+              "All trips",
+              "Travels",
+              "Rooms",
+              "Transport",
+              "Attractions",
+            ].map((item) => (
+              <a
+                key={item}
+                href="#"
+                className="block px-2 py-1 rounded hover:bg-red-50 text-red-400"
+              >
                 {item}
               </a>
             ))}
@@ -82,7 +95,9 @@ export default function Dashboard() {
           <label htmlFor="upload" className="cursor-pointer">
             <div
               className="h-10 w-10 rounded-full border-2 border-red-300 bg-cover bg-center overflow-hidden"
-              style={{ backgroundImage: profileImage ? `url(${profileImage})` : "none" }}
+              style={{
+                backgroundImage: profileImage ? `url(${profileImage})` : "none",
+              }}
             >
               {!profileImage && (
                 <div className="h-full w-full bg-red-200 rounded-full flex items-center justify-center text-sm text-red-600 font-bold">
@@ -112,10 +127,15 @@ export default function Dashboard() {
               transition={{ duration: 0.3 }}
             >
               <h2 className="text-xl font-semibold">Nearest trip</h2>
-              <h1 className="text-3xl font-bold text-red-400">{trips[tripIndex].destination}</h1>
+              <h1 className="text-3xl font-bold text-red-400">
+                {trips[tripIndex].destination}
+              </h1>
             </motion.div>
           </AnimatePresence>
-          <button onClick={handleSlideTrip} className="bg-red-400 hover:bg-red-300 text-white px-4 py-2 rounded">
+          <button
+            onClick={handleSlideTrip}
+            className="bg-red-400 hover:bg-red-300 text-white px-4 py-2 rounded"
+          >
             →
           </button>
         </div>
@@ -149,7 +169,10 @@ export default function Dashboard() {
                   dataKey="value"
                 >
                   {expensesData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
                   ))}
                 </Pie>
               </PieChart>
@@ -162,22 +185,42 @@ export default function Dashboard() {
           <h2 className="text-xl font-semibold mb-4">To-do’s</h2>
           <ul className="space-y-2">
             {[
-              { task: "Elit est nibh cras phasellus scelerisque orci", priority: "Medium" },
+              {
+                task: "Elit est nibh cras phasellus scelerisque orci",
+                priority: "Medium",
+              },
               { task: "Urna nibh eget facilisis egestas mi", priority: "Low" },
-              { task: "Enim tincidunt orci curabitur habitant", priority: "Medium" },
-              { task: "Sed condimentum magnisi dui bibendum", priority: "High" },
+              {
+                task: "Enim tincidunt orci curabitur habitant",
+                priority: "Medium",
+              },
+              {
+                task: "Sed condimentum magnisi dui bibendum",
+                priority: "High",
+              },
             ].map((item, index) => (
-              <li key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded shadow">
+              <li
+                key={index}
+                className="flex justify-between items-center p-2 bg-gray-50 rounded shadow"
+              >
                 <span>{item.task}</span>
-                <span className={`text-sm px-2 py-1 rounded-full ${
-                  item.priority === 'High' ? 'bg-red-200' : item.priority === 'Medium' ? 'bg-yellow-200' : 'bg-green-200'
-                }`}>
+                <span
+                  className={`text-sm px-2 py-1 rounded-full ${
+                    item.priority === "High"
+                      ? "bg-red-200"
+                      : item.priority === "Medium"
+                      ? "bg-yellow-200"
+                      : "bg-green-200"
+                  }`}
+                >
                   {item.priority}
                 </span>
               </li>
             ))}
           </ul>
-          <button className="mt-4 bg-red-400 hover:bg-red-300 text-white px-4 py-2 rounded">Add new task</button>
+          <button className="mt-4 bg-red-400 hover:bg-red-300 text-white px-4 py-2 rounded">
+            Add new task
+          </button>
         </div>
       </main>
     </div>

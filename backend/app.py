@@ -1,4 +1,6 @@
 import datetime
+import requests
+
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
@@ -91,6 +93,60 @@ def protected():
     current_user = str(get_jwt_identity())  # Convert identity to string
     return jsonify({"message": f"Welcome User {current_user}"}), 200
 
+
+
+
+#search function to get travel suggestions
+
+def get_search_results(query):
+    search_url = "https://www.googleapis.com/customsearch/v1"
+    api_key = "AIzaSyD-MNaGL32BFLxGUOAuwy7oyB2YvlgB1IE"  # Replace with your API key
+    cx = "60e63653d06de4aee"  # Replace with your Custom Search Engine ID
+    params = {"q": query, "key": api_key, "cx": cx}
+    response = requests.get(search_url, params=params)
+    if response.status_code == 200:
+        results = response.json().get("items", [])
+        return [item["title"] + " - " + item["link"] for item in results]
+    return []
+
+def get_travel_suggestions(city):
+    destinations_query = f"Best places to visit in {city}"
+    flights_query = f"Best flight deals to {city}"
+    hotels_query = f"Best hotels in {city}"
+    
+    destinations = get_search_results(destinations_query)
+    flights = get_search_results(flights_query)
+    hotels = get_search_results(hotels_query)
+    
+    return {
+        "Destinations": destinations,
+        "Flights": flights,
+        "Hotels": hotels
+    }
+
+if __name__ == "__main__":
+    city = input("Enter a city name: ")
+    suggestions = get_travel_suggestions(city)
+    
+    print("\nTravel Suggestions:")
+    print("\nTop Destinations:")
+    print("\n".join(suggestions["Destinations"]))
+    print("\nFlight Deals:")
+    print("\n".join(suggestions["Flights"]))
+    print("\nHotel Recommendations:")
+    print("\n".join(suggestions["Hotels"]))
+
+# Test case
+def test_get_travel_suggestions():
+    test_city = "Paris"
+    results = get_travel_suggestions(test_city)
+    assert isinstance(results, dict), "Result should be a dictionary"
+    assert "Destinations" in results, "Missing Destinations key"
+    assert "Flights" in results, "Missing Flights key"
+    assert "Hotels" in results, "Missing Hotels key"
+    print("Test passed!")
+
+test_get_travel_suggestions()
 
 # Run the Flask App
 if __name__ == "__main__":

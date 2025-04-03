@@ -17,7 +17,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test --env=jsdom",
+    "test": "craco test",
     "eject": "craco eject"
   },
   "engines": {
