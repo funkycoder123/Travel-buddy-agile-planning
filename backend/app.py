@@ -83,12 +83,12 @@ def login():
 
     return jsonify({"message": "Invalid credentials"}), 401
 
-# Map/Direction Route
+#Map/Direction Route
 
 # Imports for Google Maps API
 import googlemaps
 from flask import Flask, jsonify, request
-gmaps = googlemaps.Client(key="YOUR_GOOGLE_MAPS_API_KEY")
+gmaps = googlemaps.Client(key="AIzaSyBqIT71q4iBoNaAjaDwEG6yjKFVzksfn5g")
 
 @app.route("/directions", methods=["GET"])
 def get_directions():

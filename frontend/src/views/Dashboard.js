@@ -1,7 +1,12 @@
+
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { AnimatePresence, motion } from "framer-motion";
+import axios from "axios";  // Import axios for making HTTP requests
+import { GoogleMap, LoadScript, DirectionsRenderer, Marker } from "@react-google-maps/api";
+
 
 const trips = [
   { destination: "Rome", date: "01.09.2021 - 05.09.2021", days: 5 },
@@ -21,6 +26,23 @@ export default function Dashboard() {
   const [tripIndex, setTripIndex] = useState(0);
   const [userName, setUserName] = useState("Traveler");
   const [profileImage, setProfileImage] = useState(null);
+
+  // Google Maps Direction State
+  const [origin, setOrigin] = useState("");
+  const [destination, setDestination] = useState("");
+  const [directionResult, setDirectionResult] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const mapContainerStyle = {
+    width: '100%',
+    height: '400%'
+  }
+
+  const center = {
+    lat: 40.748817,
+    lng: -73.985428
+  }
 
   useEffect(() => {
     const storedName = localStorage.getItem("name");
@@ -48,6 +70,28 @@ export default function Dashboard() {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  // Handle Directions Fetching
+  const handleGetDirections = async (e) => {
+    e.preventDefault();
+    if (!origin || !destination) {
+      setError("Both origin and destination are required.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    
+    try {
+      const response = await axios.get("http://localhost:8080/directions", {
+        params: { origin, destination },
+      });
+      setDirectionResult(response.data);
+    } catch (error) {
+      setError("Could not fetch directions. Please try again.");
+    }
+    setLoading(false);
   };
 
   return (
@@ -120,6 +164,64 @@ export default function Dashboard() {
           </button>
         </div>
 
+        {/* Directions Form */}
+        <div className="mb-6 p-4 bg-white rounded shadow">
+          <h2 className="text-xl font-semibold mb-4">Get Directions</h2>
+          <form onSubmit={handleGetDirections}>
+            <div className="mb-4">
+              <label className="block text-gray-700">Origin</label>
+              <input
+                type="text"
+                className="w-full p-2 border rounded"
+                value={origin}
+                onChange={(e) => setOrigin(e.target.value)}
+                placeholder="Enter origin"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700">Destination</label>
+              <input
+                type="text"
+                className="w-full p-2 border rounded"
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
+                placeholder="Enter destination"
+              />
+            </div>
+            <button
+              type="submit"
+              className="bg-red-400 hover:bg-red-300 text-white py-2 px-4 rounded"
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "Get Directions"}
+            </button>
+          </form>
+
+          {error && <div className="text-red-500 mt-2">{error}</div>}
+
+          {directionResult && (
+            <div className="mt-4">
+              <h3 className="font-semibold">Duration: {directionResult.duration}</h3>
+              <h3 className="font-semibold">Distance: {directionResult.distance}</h3>
+            </div>
+          )}
+        </div>
+
+        {/* Map Section */}
+        <div className="mb-6 p-4 bg-white rounded shadow">
+          <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
+            <GoogleMap
+              mapContainerStyle={mapContainerStyle}
+              center={center}
+              zoom={10}
+            >
+              {directionResult && (
+                <DirectionsRenderer directions={directionResult} />
+              )}
+            </GoogleMap>
+          </LoadScript>
+        </div>
+
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <div className="p-4 bg-white rounded shadow">
@@ -156,30 +258,8 @@ export default function Dashboard() {
             </ResponsiveContainer>
           </div>
         </div>
-
-        {/* To-do List */}
-        <div className="mb-6 p-4 bg-white rounded shadow">
-          <h2 className="text-xl font-semibold mb-4">To-do’s</h2>
-          <ul className="space-y-2">
-            {[
-              { task: "Elit est nibh cras phasellus scelerisque orci", priority: "Medium" },
-              { task: "Urna nibh eget facilisis egestas mi", priority: "Low" },
-              { task: "Enim tincidunt orci curabitur habitant", priority: "Medium" },
-              { task: "Sed condimentum magnisi dui bibendum", priority: "High" },
-            ].map((item, index) => (
-              <li key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded shadow">
-                <span>{item.task}</span>
-                <span className={`text-sm px-2 py-1 rounded-full ${
-                  item.priority === 'High' ? 'bg-red-200' : item.priority === 'Medium' ? 'bg-yellow-200' : 'bg-green-200'
-                }`}>
-                  {item.priority}
-                </span>
-              </li>
-            ))}
-          </ul>
-          <button className="mt-4 bg-red-400 hover:bg-red-300 text-white px-4 py-2 rounded">Add new task</button>
-        </div>
       </main>
     </div>
   );
 }
+
