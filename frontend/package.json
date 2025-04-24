@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^7.1.0",
+    "axios": "^1.8.4",
     "dangerous-html": "0.1.13",
     "framer-motion": "^12.6.2",
     "next": "^12.1.10",
