@@ -4,13 +4,16 @@
   "private": true,
   "dependencies": {
     "@craco/craco": "^7.1.0",
+    "axios": "^1.8.4",
     "dangerous-html": "0.1.13",
+    "framer-motion": "^12.6.2",
     "next": "^12.1.10",
     "prop-types": "15.7.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
-    "react-router-dom": "^6.30.0"
+    "react-router-dom": "^6.30.0",
+    "recharts": "^2.15.1"
   },
   "scripts": {
     "start": "craco start",

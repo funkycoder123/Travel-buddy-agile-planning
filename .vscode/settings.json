@@ -1,5 +1,12 @@
 {
-  "cSpell.words": ["jsonify", "travelbuddy"],
+  "cSpell.words": [
+    "carterball",
+    "Elit",
+    "GIRI",
+    "gmaps",
+    "jsonify",
+    "travelbuddy"
+  ],
   "postman.settings.dotenv-detection-notification-visibility": false,
   "git.ignoreLimitWarning": true
 }
